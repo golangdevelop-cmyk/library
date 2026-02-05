@@ -21,14 +21,6 @@ func (o *Result[T]) NewResult(job T, err error) *Result[T] {
 	return &Result[T]{job: job, err: err}
 }
 
-type ContextDoneError struct {
-	Message string
-}
-
-func (e *ContextDoneError) Error() string {
-	return e.Message
-}
-
 type ChannelClosedError struct {
 	Message string
 }
@@ -79,7 +71,7 @@ func worker[T any](id int, context context.Context, jobs <-chan T, action func(T
 		case <-context.Done():
 			out <- Result[T]{
 				workerId: id,
-				err:      &ContextDoneError{Message: "Context done"},
+				err:      context.Err(),
 			}
 			return
 		case job, ok := <-jobs:

@@ -45,7 +45,7 @@ func download(url string, file *os.File) error {
 	return nil
 }
 
-func main() {
+func Main() {
 	start := time.Now()
 
 	imagesCount := 100
